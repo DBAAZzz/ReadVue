@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        {{test}}
+        {{com1}}
+        {{name}}
+        <div @click="change">change</div>
+    </div>
+</body>
+<script src="../dist/vue.js"></script>
+<script>
+    // debugger
+    let app = new Vue({
+        el: '#app',
+        props: {
+            name: {
+                type: String,
+                default: 'DBAA'
+            }
+        },
+        data: {
+            msg: 'hello vue',
+            test: '122'
+        },
+        
+        methods: {
+            change() {
+                this.test = 'change value'
+            }
+        },
+        
+        computed: {
+            com1: function() {
+                console.log(this)
+                return this.test + 'com1'
+            }
+        }
+    })
+</script>
+</html>
