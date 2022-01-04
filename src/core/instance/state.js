@@ -356,16 +356,23 @@ function initWatch(vm: Component, watch: Object) {
   }
 }
 
+/**
+ * 两件事：
+ *    1、兼容性处理，保证 handler 肯定是一个函数
+ *    2、调用 $watch
+ */
 function createWatcher(
   vm: Component,
   expOrFn: string | Function,
   handler: any,
   options?: Object
 ) {
+  // 如果 handler 是一个对象，则获取其中的 handler 选项的值
   if (isPlainObject(handler)) {
     options = handler
     handler = handler.handler
   }
+  // 如果 handler 是一个字符串，则说明是一个 methods 方法，获取 vm[handler]
   if (typeof handler === 'string') {
     handler = vm[handler]
   }

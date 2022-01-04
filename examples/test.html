@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="app">
         {{msg}}
@@ -13,11 +15,19 @@
         {{com1}}
         {{name}}
         <div @click="change">change</div>
+        <comp></comp>
     </div>
 </body>
 <script src="../dist/vue.js"></script>
 <script>
-    // debugger
+    Vue.component('comp', {
+        data: function () {
+            return {
+                count: 0
+            }
+        },
+        template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+    })
     let app = new Vue({
         el: '#app',
         props: {
@@ -28,21 +38,40 @@
         },
         data: {
             msg: 'hello vue',
-            test: '122'
-        },
-        
-        methods: {
-            change() {
-                this.test = 'change value'
+            test: '122',
+            name2: function () {
+                return 100
             }
         },
-        
-        computed: {
-            com1: function() {
+        methods: {
+            change() {
                 console.log(this)
+                this.msg = '被改变了'
+                this.test = 'change value'
+            },
+            testWathchFunc() {
+                console.log('????')
+            }
+        },
+        watch: {
+            test: 'testWathchFunc',
+            msg: [
+                function (newValue) {
+                    console.log('watch 被执行了，新值为：', newValue)
+                },
+                function (newValue) {
+                    console.log('我是监听msg的第二个方法')
+                }
+            ]
+        },
+        computed: {
+            com1: function () {
+                console.log(this)
+
                 return this.test + 'com1'
             }
         }
     })
 </script>
+
 </html>

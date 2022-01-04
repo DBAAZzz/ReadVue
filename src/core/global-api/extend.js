@@ -14,7 +14,9 @@ export function initExtend (Vue: GlobalAPI) {
   let cid = 1
 
   /**
-   * Class inheritance
+   * 基于 Vue 去扩展子类，该子类同样支持进一步的拓展
+   * 拓展时可以传递一些默认配置，就像 Vue 也有一些默认配置
+   * 默认配置如果和基类有冲突则会进行选项合并（mergeOptions）
    */
   Vue.extend = function (extendOptions: Object): Function {
     extendOptions = extendOptions || {}
@@ -24,7 +26,11 @@ export function initExtend (Vue: GlobalAPI) {
     if (cachedCtors[SuperId]) {
       return cachedCtors[SuperId]
     }
-
+    /**
+     * 利用缓存，如果存在则直接返回缓存中的构造函数
+     * 什么情况下可以利用到这个缓存？
+     *    如果在多次调用 Vue.extend 时使用同一个配置项（extendOptions），这时就会启用该缓存
+     */
     const name = extendOptions.name || Super.options.name
     if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name)
@@ -33,21 +39,24 @@ export function initExtend (Vue: GlobalAPI) {
     const Sub = function VueComponent (options) {
       this._init(options)
     }
+    // 通过原型继承的方式继承 Vue
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
+    // 选项合并，合并 Vue 的配置到自己的配置项上来
     Sub.options = mergeOptions(
       Super.options,
       extendOptions
     )
     Sub['super'] = Super
 
-    // For props and computed properties, we define the proxy getters on
-    // the Vue instances at extension time, on the extended prototype. This
-    // avoids Object.defineProperty calls for each instance created.
+    // 初始化 props，将 props 配置代理到 Sub.prototype._props 对象上
+    // 在组件内通过 this._props 方式访问
     if (Sub.options.props) {
       initProps(Sub)
     }
+    // 初始化 computed，将 computed 配置代理到 Sub.prototype 对象上
+    // 在组件内可以通过 this.computedKey 的方式访问
     if (Sub.options.computed) {
       initComputed(Sub)
     }

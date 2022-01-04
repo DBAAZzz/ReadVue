@@ -48,6 +48,7 @@ export function initMixin(Vue: Class<Component>) {
         vm
       )
     }
+    console.log('$options', vm.$options)
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       // 设置代理，将 vm 实例上的属性代理到 vm._renderProxy

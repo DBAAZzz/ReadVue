@@ -186,11 +186,12 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    console.log('vm._render()', vm._render())
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }
   }
-
+  // debugger
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
@@ -336,6 +337,7 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
 
 export function callHook (vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
+  // 
   pushTarget()
   const handlers = vm.$options[hook]
   const info = `${hook} hook`
