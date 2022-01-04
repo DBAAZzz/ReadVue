@@ -186,7 +186,7 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
-    console.log('vm._render()', vm._render())
+    
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }
