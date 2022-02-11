@@ -63,7 +63,7 @@ export function initMixin(Vue: Class<Component>) {
     /**
      * 初始化自定义事件，这里需要注意一点，所以我们在<comp @click="handleClick"> 上注册的事件，监听者不是父组件
      * 而是子组件本身，也就是说事件的派发和监听都是子组件本身，和父组件无关
-     * （未知：也就是initEvent才能通过new Vue 实现event bus）
+     * （未知：也就是 initEvent 才能通过 new Vue 实现 event bus）
      */
     initEvents(vm)
     // 解析组件的插槽信息，得到 vm.$solt ，处理渲染函数，得到 vm.$createElement 方法，即 h 函数

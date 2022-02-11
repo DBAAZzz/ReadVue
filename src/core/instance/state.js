@@ -132,6 +132,7 @@ function initProps(vm: Component, propsOptions: Object) {
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
     // 如果 vm 对象上没有相同的 key 就将 key 代理到 vm._props 上
+    // 上面对 vm._props 做了响应式处理
     if (!(key in vm)) {
       proxy(vm, `_props`, key)
     }
@@ -161,6 +162,11 @@ function initData(vm: Component) {
     )
   }
   // proxy data on instance
+  /**
+   * 两件事：
+   *  1、判重处理，data 对象上的属性不能和 props、methods 对象上的属性相同
+   *  2、代理 data 对象上的属性到 vm 实例
+   */
   const keys = Object.keys(data)
   const props = vm.$options.props
   const methods = vm.$options.methods
